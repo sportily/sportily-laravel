@@ -1,7 +1,7 @@
 {
     "name": "sportily/sportily-laravel",
     "require": {
-        "sportily/sportily-php": "dev-master"
+        "sportily/sportily-php": "1.*"
     },
     "autoload": {
         "psr-4": {
