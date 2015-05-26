@@ -2,12 +2,14 @@
 namespace Sportily\Laravel\Controllers;
 
 use Carbon\Carbon;
+use Config;
 use Illuminate\Routing\Controller;
 use Input;
 use Redirect;
 use Session;
 use Sportily\Api;
 use Sportily\OAuth;
+use URL;
 
 class AuthController extends Controller {
 
@@ -31,6 +33,11 @@ class AuthController extends Controller {
         }
 
         return Redirect::to('/');
+    }
+
+	public function logout() {
+        Session::forget('access_token');
+        return Redirect::to(Config::get('sportily.base_url') . '/logout?redirect_uri=' . URL::to('/'));
     }
 
 }

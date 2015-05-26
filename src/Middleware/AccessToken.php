@@ -17,14 +17,8 @@ class AccessToken {
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next)
-	{
-        # setup the api client library.
-		Api::setBaseUrl(Config::get('app.sportily_base_url'));
-		Api::setApiKeys(Config::get('app.sportily_client_id'), Config::get('app.sportily_client_secret'));
-		Api::setRedirectUrl(Config::get('app.sportily_redirect_url'));
-
-		# look for an existing access token.
+	public function handle($request, Closure $next) {
+        # look for an existing access token.
 		$access_token = Session::get('access_token', null);
 	    $expiry_date = Carbon::parse(Session::get('access_token_expiry', null));
 	    $now = Carbon::now();
