@@ -1,8 +1,11 @@
 {
     "name": "sportily/sportily-laravel",
+    "require": {
+        "sportily/sportily-php": "dev-master"
+    },
     "autoload": {
         "psr-4": {
-            "Sportily\\": "src/"
+            "Sportily\\Laravel\\": "src/"
         }
     }
 }
