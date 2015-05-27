@@ -2,10 +2,10 @@
 
 return [
 
-	'base_url'      => 'http://oauth.sporti.ly',
-	'admin_url'     => 'http://admin.sporti.ly',
-	'redirect_url'  => 'http://<host>:<port>/callback',
-	'client_id'     => '<client-id>',
-	'client_secret' => '<client-secret>',
+	'base_url'      => env('SPORTILY_BASE_URL', 'http://oauth.sporti.ly'),
+	'admin_url'     => env('SPORTILY_ADMIN_URL', 'http://admin.sporti.ly'),
+	'redirect_url'  => env('SPORTILY_REDIRECT_URL', 'http://leagues.sporti.ly/callback'),
+	'client_id'     => env('SPORTILY_CLIENT_ID', 'pk_...'),
+	'client_secret' => env('SPORTILY_CLIENT_SECRET', 'sk_...'),
 
 ];
