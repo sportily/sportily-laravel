@@ -1,10 +1,9 @@
 <?php
 namespace Sportily\Laravel\Endpoints;
 
-class Posts extends \Illuminate\Support\Facades\Facade {
+class Posts extends Endpoint {
 
-    protected static function getFacadeAccessor() {
-        return 'sportily.endpoints.Posts';
+    public function published($organisation_id) {
+        return $this->all([ 'organisation_id' => $organisation_id, 'status' => 'published' ]);
     }
-
 }

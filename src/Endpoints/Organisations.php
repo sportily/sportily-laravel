@@ -1,10 +1,10 @@
 <?php
 namespace Sportily\Laravel\Endpoints;
 
-class Organisations extends \Illuminate\Support\Facades\Facade {
+class Organisations extends Endpoint {
 
-    protected static function getFacadeAccessor() {
-        return 'sportily.endpoints.Organisations';
+    public function retrieveBySubdomain($subdomain) {
+        return head(array_get($this->all([ 'subdomain' => $subdomain ]), 'data'));
     }
 
 }

@@ -4,7 +4,6 @@ namespace Sportily\Laravel;
 use Config;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Sportily\Api;
-use Sportily\Laravel\Endpoints\Endpoint;
 use Sportily\Laravel\Middleware\AccessToken;
 
 class ServiceProvider extends BaseServiceProvider {
@@ -37,11 +36,39 @@ class ServiceProvider extends BaseServiceProvider {
         });
 
         # register all the endpoints that the sportily api supports.
-        foreach (Endpoint::$endpoints as $name => $class) {
-            $this->app->bind('sportily.endpoints.' . $name, function() use($class) {
-                return new Endpoint($class);
+        foreach (self::$endpoints as $name => $endpoint) {
+            $this->app->bind('sportily.endpoints.' . $name, function() use($name, $endpoint) {
+                $class = 'Sportily\\Laravel\\Endpoints\\' . $name;
+                return new $class($endpoint);
             });
         }
     }
+
+    /**
+     * A map of all the endpoints on the sportily api.
+     * @var array
+     */
+    private static $endpoints = [
+        'AgeGroups' => 'AgeGroup',
+        'Competitions' => 'Competition',
+        'Divisions' => 'Division',
+        'DivisionEntries' => 'DivisionEntry',
+        'Documents' => 'Document',
+        'Events' => 'FixtureEvent',
+        'Files' => 'File',
+        'Fixtures' => 'Fixture',
+        'Galleries' => 'Gallery',
+        'Images' => 'Image',
+        'Members' => 'Member',
+        'Organisations' => 'Organisation',
+        'Participants' => 'Participant',
+        'People' => 'Person',
+        'Posts' => 'Post',
+        'Roles' => 'Role',
+        'Seasons' => 'Season',
+        'Teams' => 'Team',
+        'Users' => 'User',
+        'Venues' => 'Venue'
+    ];
 
 }
