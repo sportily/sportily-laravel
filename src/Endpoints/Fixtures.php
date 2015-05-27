@@ -6,18 +6,17 @@ use DateTime;
 class Fixtures extends Endpoint {
 
     public function upcoming($competition_id) {
-        $fixtures = $this->all([ 'competition_id' => $competition_id, 'period' => 'future' ]);
-        $grouped = $this->groupFixturesByDay($fixtures);
-        return head($grouped);
+        $filter = ['competition_id' => $competition_id, 'period' => 'future'];
+        return head($this->grouped($filter));
     }
 
     public function latest($competition_id) {
-        $fixtures = $this->all([ 'competition_id' => $competition_id, 'period' => 'past' ]);
-        $grouped = $this->groupFixturesByDay($fixtures);
-        return last($grouped);
+        $filter = ['competition_id' => $competition_id, 'period' => 'past'];
+        return last($this->grouped($filter));
     }
 
-    private function groupFixturesByDay($fixtures) {
+    public function grouped($filter) {
+        $fixtures = $this->all($filter);
         return array_reduce($fixtures['data'], function($result, $fixture) {
             $date = (new DateTime($fixture['start_time']))->format('Y-m-d');
             if (!isset($result[$date])) {
