@@ -67,6 +67,7 @@ class ServiceProvider extends BaseServiceProvider {
         'Roles' => 'Role',
         'Seasons' => 'Season',
         'Teams' => 'Team',
+        'Trial' => 'Trial',
         'Users' => 'User',
         'Venues' => 'Venue'
     ];
