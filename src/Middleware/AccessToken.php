@@ -5,7 +5,7 @@ use Carbon\Carbon;
 use Closure;
 use Config;
 use Session;
-use Sportily\Oauth;
+use Sportily\OAuth;
 use Sportily\Api;
 
 class AccessToken {
