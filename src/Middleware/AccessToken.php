@@ -1,6 +1,7 @@
 <?php
 namespace Sportily\Laravel\Middleware;
 
+use Cache;
 use Carbon\Carbon;
 use Closure;
 use Config;
@@ -18,25 +19,49 @@ class AccessToken {
 	 * @return mixed
 	 */
 	public function handle($request, Closure $next) {
-        # look for an existing access token.
-		$access_token = Session::get('access_token', null);
-	    $expiry_date = Carbon::parse(Session::get('access_token_expiry', null));
-	    $now = Carbon::now();
+		$now = Carbon::now();
 
-	    # if there is no access token, we must obtain one for the client.
-		if ($access_token == null || $expiry_date->lte($now)) {
-	        $response = OAuth::token();
-	        $access_token = $response['access_token'];
-	        $expiry_date = Carbon::now()->addSeconds($response['expires_in']);
+        # look for a token in the session.
+		list($token, $expiry) = $this->getSessionToken();
+		if ($token == null || $expiry->lte($now)) {
+
+			# look for a token in the cache.
+			list($token, $expiry) = $this->getCachedToken();
+			if ($token == null || $expiry->lte($now)) {
+
+				# still nothing, then we'll have to get a new one.
+				list($token, $expiry) = $this->getNewToken();
+				Cache::forever('access_token', $token);
+				Cache::forever('access_token_expiry', $expiry);
+			}
 		}
 
 		# store the access token in the session for later use.
-	    Session::set('access_token', $access_token);
-	    Session::set('access_token_expiry', $expiry_date);
-	    Api::setAccessToken($access_token);
+	    Session::set('access_token', $token);
+	    Session::set('access_token_expiry', $expiry);
+	    Api::setAccessToken($token);
 
 		# permit the action.
 		return $next($request);
+	}
+
+	private function getSessionToken() {
+		$token = Session::get('access_token', null);
+	    $expiry = Carbon::parse(Session::get('access_token_expiry', null));
+		return [ $token, $expiry ];
+	}
+
+	private function getCachedToken() {
+		$token = Cache::get('access_token', null);
+		$expiry = Carbon::parse(Cache::get('access_token_expiry', null));
+		return [ $token, $expiry ];
+	}
+
+	private function getNewToken() {
+		$response = OAuth::token();
+		$token = $response['access_token'];
+		$expiry = Carbon::now()->addSeconds($response['expires_in']);
+		return [ $token, $expiry ];
 	}
 
 }
