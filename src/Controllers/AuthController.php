@@ -37,7 +37,7 @@ class AuthController extends Controller {
 
 	public function logout() {
         Session::forget('access_token');
-        return Redirect::to(Config::get('sportily.base_url') . '/logout?redirect_uri=' . URL::to('/'));
+        return Redirect::to(Config::get('sportily.oauth_base_url') . '/logout?redirect_uri=' . URL::to('/'));
     }
 
 }

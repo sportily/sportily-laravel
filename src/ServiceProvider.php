@@ -14,7 +14,8 @@ class ServiceProvider extends BaseServiceProvider {
     public function boot() {
         # setup the api client library.
 		Api::setBaseUrl(Config::get('sportily.base_url'));
-		Api::setApiKeys(Config::get('sportily.client_id'), Config::get('sportily.client_secret'));
+    Api::setOauthBaseUrl(Config::get('sportily.oauth_base_url'));
+    Api::setApiKeys(Config::get('sportily.client_id'), Config::get('sportily.client_secret'));
 		Api::setRedirectUrl(Config::get('sportily.redirect_url'));
 
         # define routes for working with the oauth flow.
