@@ -69,7 +69,8 @@ class ServiceProvider extends BaseServiceProvider {
         'Teams' => 'Team',
         'Trial' => 'Trial',
         'Users' => 'User',
-        'Venues' => 'Venue'
+        'Venues' => 'Venue',
+        'Websites' => 'Website'
     ];
 
 }
